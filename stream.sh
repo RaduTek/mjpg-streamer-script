@@ -20,17 +20,35 @@ source $CONFIG_PATH
 WEB_ROOT="$SCRIPT_DIR/webroot"
 BIN_DIR="$SCRIPT_DIR/bin"
 
+# Binaries
+MJPG_STREAMER_BIN="$BIN_DIR/mjpg_streamer"
+INPUT_PLUGIN_BIN="$BIN_DIR/input_uvc.so"
+OUTPUT_PLUGIN_BIN="$BIN_DIR/output_http.so"
+
+# Check if binaries exist
+check_binary() {
+    local binary_path="$1"
+    if ! [ -f "$binary_path" ]; then
+        echo "Missing binary file: \"$binary_path\"! Please add it!"
+        exit 1
+    fi
+}
+
+check_binary $MJPG_STREAMER_BIN
+check_binary $INPUT_PLUGIN_BIN
+check_binary $OUTPUT_PLUGIN_BIN
+
 # Plugin parameters
-INPUT_PLUGIN="$BIN_DIR/input_uvc.so -d /dev/v4l/by-id/$CAMERA_ID -r $CAMERA_RES"
-OUTPUT_PLUGIN="$BIN_DIR/output_http.so -p $WEB_PORT -w $WEB_ROOT"
+INPUT_PLUGIN_PARAM="-d /dev/v4l/by-id/$CAMERA_ID -r $CAMERA_RES"
+OUTPUT_PLUGIN_PARAM="-p $WEB_PORT -w $WEB_ROOT"
 
 # Add optional web login parameter
 if ! [ -z $WEB_PWD ]; then
-    OUTPUT_PLUGIN="$OUTPUT_PLUGIN -c $WEB_PWD"
+    OUTPUT_PLUGIN_PARAM="$OUTPUT_PLUGIN_PARAM -c $WEB_PWD"
 fi
 
 # Start command
-START_CMD="$BIN_DIR/mjpg_streamer -i '$INPUT_PLUGIN' -o '$OUTPUT_PLUGIN'"
+START_CMD="$MJPG_STREAMER_BIN -i '$INPUT_PLUGIN_BIN $INPUT_PLUGIN_PARAM' -o '$OUTPUT_PLUGIN_BIN $OUTPUT_PLUGIN_PARAM'"
 
 # Functions
 function list_web_addresses() {

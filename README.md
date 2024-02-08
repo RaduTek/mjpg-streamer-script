@@ -11,8 +11,7 @@ Included is also a simple web UI that lets you view either the MJPEG live stream
 -   GNU Screen: [https://www.gnu.org/software/screen/](https://www.gnu.org/software/screen/)
 -   MJPG Streamer: [mjpg-streamer](https://github.com/jacksonliam/mjpg-streamer)
 
-Compiled MJPG Streamer binaries go in the `bin` directory at the same level as the script.
-For this script you need the `mjpg-streamer` binary and `input-uvc.so` and `output-http.so` plugins.
+Use the instructions from the [mjpg-streamer](https://github.com/jacksonliam/mjpg-streamer) repository to compile and install `mjpg_streamer` for your platform/architecture.
 
 ## Usage
 
